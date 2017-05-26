@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,28 @@ namespace ShootCube.Global
                 var ReturnValue = _BinaryFormatter.Deserialize(_MemoryStream);
                 return (T)ReturnValue;
             }
+        }
+
+
+        public static bool IsLess(this Vector3 value1, Vector3 value2)
+        {
+            return value1.X < value2.X && value1.Y < value2.Y && value1.Z < value2.Z;
+        }
+
+        public static bool IsGreater(this Vector3 value1, Vector3 value2)
+        {
+            return value1.X > value2.X && value1.Y > value2.Y && value1.Z > value2.Z;
+        }
+
+
+        public static bool IsLessOrEqual(this Vector3 value1, Vector3 value2)
+        {
+            return value1.X <= value2.X && value1.Y <= value2.Y && value1.Z <= value2.Z;
+        }
+
+        public static bool IsGreaterOrEqual(this Vector3 value1, Vector3 value2)
+        {
+            return value1.X >= value2.X && value1.Y >= value2.Y && value1.Z >= value2.Z;
         }
     }
 }

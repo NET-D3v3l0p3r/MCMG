@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using ShootCube.Maths;
+using ShootCube.World.Chunk.Model;
 
 namespace ShootCube.Global
 {
@@ -22,7 +24,8 @@ namespace ShootCube.Global
         public static short[] IndicesDefinitionSprite = new short[] { 0, 1, 2, 2, 3, 0 };
         public static IndexBuffer IndexBuffer { get; private set; }
 
-        public static BasicEffect Effect { get; private set; }
+        public static Effect Effect { get; private set; }
+        public static Random Random { get; private set; }
 
         public enum Side
         {
@@ -35,6 +38,22 @@ namespace ShootCube.Global
             ZLeft,
             ZRight
         };
+
+        public enum Orientation
+        {
+            North,
+            East,
+            South,
+            West,
+
+            NorthEast,
+            SouthEast,
+            SouthWest,
+            NorthWest,
+
+            Down,
+            Up
+        }
 
         public static void Initialize()
         {
@@ -71,9 +90,10 @@ namespace ShootCube.Global
             full = new int[0];
             GC.Collect();
             Console.WriteLine("DONE LOADING INDICES!");
-
-            Effect = new BasicEffect(GraphicsDevice);
+            Effect = Content.Load<Effect>(@"main");
             Console.WriteLine("DONE LOADING EFFECT!");
+
+            Random = new Random();
         }
     }
 }

@@ -3,22 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
 using ShootCube.Global;
-using static ShootCube.Global.Globals;
 using ShootCube.Declaration;
+using System.Runtime.InteropServices;
 
-namespace ShootCube.World.Chunk
+namespace ShootCube.Dynamics
 {
-    public interface IFlat
+    public class LightManager
     {
-        VPTVDeclaration[] Vertices { get; set; }
-        Vector2 TextureAtlasCoordinates { get; set; }
-        byte Id { get; set; }
-
-        Globals.Side Side { get; set; }
+        public List<LightSource> LightSources { get; set; }
     }
 }

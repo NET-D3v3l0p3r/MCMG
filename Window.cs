@@ -7,6 +7,11 @@ using ShootCube.World.Chunk.Model;
 using System;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using ShootCube.Sky;
+using ShootCube.Global.Input;
+using ShootCube.World.Chunk;
+using ShootCube.Global.Picking;
+using ShootCube.Dynamics;
 
 namespace ShootCube
 {
@@ -17,6 +22,13 @@ namespace ShootCube
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        FpsCounter fpsCounter = new FpsCounter();
+        SpriteFont debugFont;
+
+        public Sky.Sky SkyEnvironment;
+
+
 
         public Window()
         {
@@ -38,8 +50,12 @@ namespace ShootCube
             graphics.ApplyChanges();
 
             IsFixedTimeStep = false;
+ 
             base.Initialize();
         }
+
+
+        LightSource source;
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -56,20 +72,63 @@ namespace ShootCube
 
             Globals.Initialize();
 
-
-            new ChunkManager(25, 25);
-            new Camera(0.007f, .5f);
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
+            new Camera(0.007f, .35f);
+            new ChunkManager(15, 15);
             ChunkManager.Start();
-            sw.Stop();
 
-            Console.WriteLine(sw.Elapsed.TotalSeconds + " s!");
-            activeChunk = ChunkManager.Chunks[0];
+            ChunkManager.Cubes[56, 32, 32] = 6;
+
+            ChunkManager.Run();
+
+            KeyboardControl.AddKey(new Key(Keys.W, new Action(() =>
+            {
+                Camera.Move(new Vector3(0, 0, -1));
+            }), false));
+            KeyboardControl.AddKey(new Key(Keys.A, new Action(() =>
+            {
+                Camera.Move(new Vector3(-1, 0, 0));
+            }), false));
+            KeyboardControl.AddKey(new Key(Keys.S, new Action(() =>
+            {
+                Camera.Move(new Vector3(0, 0, 1));
+            }), false));
+            KeyboardControl.AddKey(new Key(Keys.D, new Action(() =>
+            {
+                Camera.Move(new Vector3(1, 0, 0));
+            }), false));
+            KeyboardControl.AddKey(new Key(Keys.Space, new Action(() =>
+            {
+                Camera.Move(new Vector3(0, 1, 0));
+            }), false));
+            KeyboardControl.AddKey(new Key(Keys.LeftShift, new Action(() =>
+            {
+                Camera.Move(new Vector3(0, -1, 0));
+            }), false));
+
+            KeyboardControl.AddKey(new Key(Keys.Escape, new Action(() =>
+            {
+                Exit();
+            }), true));
 
 
-            // TODO: use this.Content to load your game content here
+            KeyboardControl.AddKey(new Key(Keys.X, new Action(() =>
+            {
+
+                source = new LightSource(Camera.CameraPosition, 13);
+                source.Emit();
+
+
+            }), true));
+
+            debugFont = Content.Load<SpriteFont>("debug");
+
+            SkyEnvironment = new ShootCube.Sky.Sky(1);
+
+
+            // TEST
+
+      
+
         }
 
         /// <summary>
@@ -82,8 +141,7 @@ namespace ShootCube
         }
 
 
-        bool pressed;
-        Chunk activeChunk;
+        Profile? _new;
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -94,57 +152,21 @@ namespace ShootCube
             if (!this.IsActive)
                 return;
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-
-            for (int i = 0; i < ChunkManager.Chunks.Length; i++)
-            {
-                if (ChunkManager.Chunks[i].ChunkBox.Contains(Camera.CameraPosition) == ContainmentType.Contains)
-                {
-                    activeChunk = ChunkManager.Chunks[i];
-                    break;
-                }
-            }
-
-
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-                Camera.Move(new Vector3(0, 0, -1), activeChunk.BoundingBoxes.ToArray());
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-                Camera.Move(new Vector3(0, 0, 1), activeChunk.BoundingBoxes.ToArray());
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-                Camera.Move(new Vector3(1, 0, 0), activeChunk.BoundingBoxes.ToArray());
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-                Camera.Move(new Vector3(-1, 0, 0), activeChunk.BoundingBoxes.ToArray());
-
-            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
-                Camera.Move(new Vector3(0, -1, 0), activeChunk.BoundingBoxes.ToArray());
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                Camera.Move(new Vector3(0, 1, 0), activeChunk.BoundingBoxes.ToArray());
-
-
-
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && !pressed)
-            {
-                pressed = true;
-                for (int j = 0; j < activeChunk.BoundingBoxes.Count; j++)
-                {
-                    var result = Camera.MouseRay.Intersects(activeChunk.BoundingBoxes[j]);
-                    if (result.HasValue && result.Value < 3)
-                    {
-                        activeChunk.RemoveCube(activeChunk.BoundingBoxes[j]);
-                        break;
-                    }
-                }
-
-
-            }
-            if (Mouse.GetState().LeftButton == ButtonState.Released)
-                pressed = false;
-
+            KeyboardControl.Update();
             Camera.Update();
             ChunkManager.Update(gameTime);
+             
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+
+                _new = ChunkManager.Pick(5);
+                _new?.Chunk.RemoveCube(_new.Value.BoundingBox);
+            }
+
+
+
+
+            SkyEnvironment.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -155,37 +177,57 @@ namespace ShootCube
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            fpsCounter.Start(gameTime);
+            GraphicsDevice.Clear(Color.CornflowerBlue );
+
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+            GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            GraphicsDevice.Indices = Globals.IndexBuffer;
 
-            Globals.Effect.View = Camera.View;
-            Globals.Effect.Projection = Camera.Projection;
-            Globals.Effect.World = Matrix.Identity;
-            Globals.Effect.TextureEnabled = true;
-            Globals.Effect.Texture = ChunkManager.TextureAtlas;
-            //Globals.Effect.PreferPerPixelLighting = true;
-            //Globals.Effect.EnableDefaultLighting();
+
+            // CHUNKS
+
+            //Globals.Effect.View = Camera.View;
+            //Globals.Effect.Projection = Camera.Projection;
+            //Globals.Effect.World = Matrix.Identity;
+            //Globals.Effect.TextureEnabled = true;
+            //Globals.Effect.Texture = ChunkManager.TextureAtlas;
+
+            Globals.Effect.Parameters["View"].SetValue(Camera.View);
+            Globals.Effect.Parameters["World"].SetValue(Matrix.Identity);
+            Globals.Effect.Parameters["Projection"].SetValue(Camera.Projection);
+            Globals.Effect.Parameters["TextureAtlas"].SetValue(ChunkManager.TextureAtlas);
+            Globals.Effect.Parameters["GlobalValue"].SetValue(MathHelper.Clamp((float)Math.Sin(Sky.Sky.Time), 1.0f, 2.0f));
+
             Globals.Effect.CurrentTechnique.Passes[0].Apply();
-
-            Globals.GraphicsDevice.Indices = Globals.IndexBuffer;
             ChunkManager.Render();
-
-
-            //for (int i = 0; i < ChunkManager.Chunks.Length; i++)
-            //{
-            //    if (ChunkManager.Chunks[i].ChunkBox.Contains(Camera.CameraPosition) == ContainmentType.Contains)
-            //    {
-            //        for (int j = 0; j < ChunkManager.Chunks[i].BoundingBoxes.Count; j++)
-            //        {
-            //            BoundingBoxRenderer.Render(ChunkManager.Chunks[i].BoundingBoxes[j], GraphicsDevice, Camera.View, Camera.Projection, Color.Red);
-            //        }
-            //    }
-            //}
 
 
             // TODO: Add your drawing code here
 
+            SkyEnvironment.Render();
+            //source?.DebugDrawLight();
+
+            printDebug();
+
+
             base.Draw(gameTime);
+
+        }
+
+        private void printDebug()
+        {
+            var fps = fpsCounter.End();
+            string debug =
+                @"FPS: " + fps + Environment.NewLine
+                + "Position: " + Camera.CameraPosition + Environment.NewLine
+                + "Look_at: " + Camera.CameraOrientation;
+
+            spriteBatch.Begin();
+            spriteBatch.DrawString(debugFont, debug, new Vector2(0, 0), Color.Yellow);
+            spriteBatch.End();
         }
     }
 }

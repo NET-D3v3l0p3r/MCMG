@@ -13,6 +13,7 @@ namespace ShootCube
         [STAThread]
         static void Main()
         {
+           
             using (var game = new Window())
                 game.Run();
         }

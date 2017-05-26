@@ -9,27 +9,34 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ShootCube.Global;
 using ShootCube.World.Chunk.Model;
+using ShootCube.Declaration;
 
 namespace ShootCube.World.Chunk
 {
-    class ZFlat : IFlat
+    public class ZFlat : IFlat
     {
-        public VertexPositionNormalTexture[] Vertices { get; set; }
+        public VPTVDeclaration[] Vertices { get; set; }
         public Vector2 TextureAtlasCoordinates { get; set; }
+        public byte Id { get; set; }
 
-        public ZFlat(Vector3 world, int x, int y, int z, byte id)
+        public Globals.Side Side { get; set; }
+
+
+        public ZFlat(Vector3 world, int x, int y, int z, byte id, float value)
         {
-            Vertices = new VertexPositionNormalTexture[4];
+            Vertices = new VPTVDeclaration[4];
+
+            Id = id;
 
             //Vertices[0] = new VertexPositionTexture(world + new Vector3(x, y, z), color);
             //Vertices[1] = new VertexPositionTexture(world + new Vector3(x, y, z + 1), color);
             //Vertices[2] = new VertexPositionTexture(world + new Vector3(x, y + 1, z + 1), color);
             //Vertices[3] = new VertexPositionTexture(world + new Vector3(x, y + 1, z), color);
 
-            Vertices[0] = new VertexPositionNormalTexture(world + new Vector3(x, y, z), new Vector3(1, 0, 0), new Vector2(0 + ChunkManager.TextureAtlasCoordinates[id].X, ChunkManager.TextureAtlasCoordinates[id].Y + ChunkManager.RatioY));
-            Vertices[1] = new VertexPositionNormalTexture(world + new Vector3(x, y, z + 1), new Vector3(1, 0, 0), new Vector2(ChunkManager.RatioX + ChunkManager.TextureAtlasCoordinates[id].X, ChunkManager.TextureAtlasCoordinates[id].Y + ChunkManager.RatioY));
-            Vertices[2] = new VertexPositionNormalTexture(world + new Vector3(x, y + 1, z + 1), new Vector3(1, 0, 0), new Vector2(ChunkManager.RatioX + ChunkManager.TextureAtlasCoordinates[id].X, ChunkManager.TextureAtlasCoordinates[id].Y + 0));
-            Vertices[3] = new VertexPositionNormalTexture(world + new Vector3(x, y + 1, z), new Vector3(1, 0, 0), new Vector2(0 + ChunkManager.TextureAtlasCoordinates[id].X, ChunkManager.TextureAtlasCoordinates[id].Y + 0));
+            Vertices[0] = new VPTVDeclaration(world + new Vector3(x, y, z), new Vector2(0 + ChunkManager.TextureAtlasCoordinates[id].X, ChunkManager.TextureAtlasCoordinates[id].Y + ChunkManager.RatioY), value);
+            Vertices[1] = new VPTVDeclaration(world + new Vector3(x, y, z + 1), new Vector2(ChunkManager.RatioX + ChunkManager.TextureAtlasCoordinates[id].X, ChunkManager.TextureAtlasCoordinates[id].Y + ChunkManager.RatioY), value);
+            Vertices[2] = new VPTVDeclaration(world + new Vector3(x, y + 1, z + 1), new Vector2(ChunkManager.RatioX + ChunkManager.TextureAtlasCoordinates[id].X, ChunkManager.TextureAtlasCoordinates[id].Y + 0), value);
+            Vertices[3] = new VPTVDeclaration(world + new Vector3(x, y + 1, z), new Vector2(0 + ChunkManager.TextureAtlasCoordinates[id].X, ChunkManager.TextureAtlasCoordinates[id].Y + 0), value);
 
 
         }
