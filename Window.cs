@@ -1,73 +1,68 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using ShootCube.Global;
-using System.Linq;
-using ShootCube.World.Chunk.Model;
-using System;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using ShootCube.Sky;
-using ShootCube.Global.Input;
-using ShootCube.World.Chunk;
-using ShootCube.Global.Picking;
 using ShootCube.Dynamics;
+using ShootCube.Global;
+using ShootCube.Global.Input;
+using ShootCube.Global.Picking;
+using ShootCube.World.Chunk.Model;
 
 namespace ShootCube
 {
     /// <summary>
-    /// This is the main type for your game.
+    ///     This is the main type for your game.
     /// </summary>
     public class Window : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private Profile? _new;
+        private SpriteFont _debugFont;
 
-        FpsCounter fpsCounter = new FpsCounter();
-        SpriteFont debugFont;
+        private readonly FpsCounter _fpsCounter = new FpsCounter();
+        private readonly GraphicsDeviceManager _graphics;
 
         public Sky.Sky SkyEnvironment;
 
 
+        private LightSource _source;
+        private SpriteBatch _spriteBatch;
+
 
         public Window()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
         /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
+        ///     Allows the game to perform any initialization it needs to before starting to run.
+        ///     This is where it can query for any required services and load any non-graphic
+        ///     related content.  Calling base.Initialize will enumerate through any components
+        ///     and initialize them as well.
         /// </summary>
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
 
-            graphics.SynchronizeWithVerticalRetrace = true;
-            graphics.ApplyChanges();
+            _graphics.SynchronizeWithVerticalRetrace = true;
+            _graphics.ApplyChanges();
 
             IsFixedTimeStep = false;
- 
+
             base.Initialize();
         }
 
-
-        LightSource source;
-
         /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
+        ///     LoadContent will be called once per game and is the place to load
+        ///     all of your content.
         /// </summary>
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Globals.GraphicsDevice = GraphicsDevice;
-            Globals.GraphicsDeviceManager = graphics;
+            Globals.GraphicsDeviceManager = _graphics;
             Globals.Content = Content;
 
             Globals.Initialize();
@@ -80,90 +75,58 @@ namespace ShootCube
 
             ChunkManager.Run();
 
-            KeyboardControl.AddKey(new Key(Keys.W, new Action(() =>
-            {
-                Camera.Move(new Vector3(0, 0, -1));
-            }), false));
-            KeyboardControl.AddKey(new Key(Keys.A, new Action(() =>
-            {
-                Camera.Move(new Vector3(-1, 0, 0));
-            }), false));
-            KeyboardControl.AddKey(new Key(Keys.S, new Action(() =>
-            {
-                Camera.Move(new Vector3(0, 0, 1));
-            }), false));
-            KeyboardControl.AddKey(new Key(Keys.D, new Action(() =>
-            {
-                Camera.Move(new Vector3(1, 0, 0));
-            }), false));
-            KeyboardControl.AddKey(new Key(Keys.Space, new Action(() =>
-            {
-                Camera.Move(new Vector3(0, 1, 0));
-            }), false));
-            KeyboardControl.AddKey(new Key(Keys.LeftShift, new Action(() =>
-            {
-                Camera.Move(new Vector3(0, -1, 0));
-            }), false));
+            KeyboardControl.AddKey(new Key(Keys.W, () => { Camera.Move(new Vector3(0, 0, -1)); }, false));
+            KeyboardControl.AddKey(new Key(Keys.A, () => { Camera.Move(new Vector3(-1, 0, 0)); }, false));
+            KeyboardControl.AddKey(new Key(Keys.S, () => { Camera.Move(new Vector3(0, 0, 1)); }, false));
+            KeyboardControl.AddKey(new Key(Keys.D, () => { Camera.Move(new Vector3(1, 0, 0)); }, false));
+            KeyboardControl.AddKey(new Key(Keys.Space, () => { Camera.Move(new Vector3(0, 1, 0)); }, false));
+            KeyboardControl.AddKey(new Key(Keys.LeftShift, () => { Camera.Move(new Vector3(0, -1, 0)); }, false));
 
-            KeyboardControl.AddKey(new Key(Keys.Escape, new Action(() =>
-            {
-                Exit();
-            }), true));
+            KeyboardControl.AddKey(new Key(Keys.Escape, () => { Exit(); }, true));
 
 
-            KeyboardControl.AddKey(new Key(Keys.X, new Action(() =>
+            KeyboardControl.AddKey(new Key(Keys.X, () =>
             {
+                _source = new LightSource(Camera.CameraPosition, 13);
+                _source.Emit();
+            }, true));
 
-                source = new LightSource(Camera.CameraPosition, 13);
-                source.Emit();
+            _debugFont = Content.Load<SpriteFont>("debug");
 
-
-            }), true));
-
-            debugFont = Content.Load<SpriteFont>("debug");
-
-            SkyEnvironment = new ShootCube.Sky.Sky(1);
+            SkyEnvironment = new Sky.Sky(1);
 
 
             // TEST
-
-      
-
         }
 
         /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
+        ///     UnloadContent will be called once per game and is the place to unload
+        ///     game-specific content.
         /// </summary>
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
         }
 
-
-        Profile? _new;
         /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
+        ///     Allows the game to run logic such as updating the world,
+        ///     checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (!this.IsActive)
+            if (!IsActive)
                 return;
 
             KeyboardControl.Update();
             Camera.Update();
             ChunkManager.Update(gameTime);
-             
+
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-
                 _new = ChunkManager.Pick(5);
                 _new?.Chunk.RemoveCube(_new.Value.BoundingBox);
             }
-
-
 
 
             SkyEnvironment.Update(gameTime);
@@ -172,13 +135,13 @@ namespace ShootCube
         }
 
         /// <summary>
-        /// This is called when the game should draw itself.
+        ///     This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            fpsCounter.Start(gameTime);
-            GraphicsDevice.Clear(Color.CornflowerBlue );
+            _fpsCounter.Start(gameTime);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -199,7 +162,8 @@ namespace ShootCube
             Globals.Effect.Parameters["World"].SetValue(Matrix.Identity);
             Globals.Effect.Parameters["Projection"].SetValue(Camera.Projection);
             Globals.Effect.Parameters["TextureAtlas"].SetValue(ChunkManager.TextureAtlas);
-            Globals.Effect.Parameters["GlobalValue"].SetValue(MathHelper.Clamp((float)Math.Sin(Sky.Sky.Time), 1.0f, 2.0f));
+            Globals.Effect.Parameters["GlobalValue"]
+                .SetValue(MathHelper.Clamp((float) Math.Sin(Sky.Sky.Time), 1.0f, 2.0f));
 
             Globals.Effect.CurrentTechnique.Passes[0].Apply();
             ChunkManager.Render();
@@ -210,24 +174,23 @@ namespace ShootCube
             SkyEnvironment.Render();
             //source?.DebugDrawLight();
 
-            printDebug();
+            PrintDebug();
 
 
             base.Draw(gameTime);
-
         }
 
-        private void printDebug()
+        private void PrintDebug()
         {
-            var fps = fpsCounter.End();
-            string debug =
+            var fps = _fpsCounter.End();
+            var debug =
                 @"FPS: " + fps + Environment.NewLine
                 + "Position: " + Camera.CameraPosition + Environment.NewLine
                 + "Look_at: " + Camera.CameraOrientation;
 
-            spriteBatch.Begin();
-            spriteBatch.DrawString(debugFont, debug, new Vector2(0, 0), Color.Yellow);
-            spriteBatch.End();
+            _spriteBatch.Begin();
+            _spriteBatch.DrawString(_debugFont, debug, new Vector2(0, 0), Color.Yellow);
+            _spriteBatch.End();
         }
     }
 }
