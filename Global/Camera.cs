@@ -1,27 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using ShootCube.World.Chunk.Model;
 using Microsoft.Xna.Framework.Input;
+using ShootCube.World.Chunk.Model;
 using static ShootCube.Global.Globals;
 
 namespace ShootCube.Global
 {
     public class Camera
     {
-        public static Vector3 REFERENCEVECTOR = new Vector3(0, 0, -1);
-
-        public static float Yaw { get; private set; }
-        public static float Pitch { get; private set; }
-
-        public static float MouseSensity { get; set; }
-        public static float Velocity { get; set; }
+        public static Vector3 Referencevector = new Vector3(0, 0, -1);
 
         public static Matrix View, Projection;
 
@@ -31,48 +18,66 @@ namespace ShootCube.Global
         public static Orientation CameraOrientation;
         public static Vector3 DirectionStationary;
 
-        public static BoundingFrustum ViewFrustum { get; private set; }
-        public static Ray MouseRay { get; private set; }
+        private static int _oldX, _oldY;
 
-        private static int oldX, oldY;
         public Camera(float dpi, float velocity)
         {
             MouseSensity = dpi;
             Velocity = velocity;
 
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, Globals.GraphicsDevice.Viewport.AspectRatio, 0.1f, 1024); ;
+            Projection =
+                Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 0.1f,
+                    1024);
+            ;
 
             CameraPosition = new Vector3(16 * ChunkManager.Width / 2, 65, 16 * ChunkManager.Depth / 2);
 
-            oldX = Globals.GraphicsDevice.Viewport.Width / 2;
-            oldY = Globals.GraphicsDevice.Viewport.Height / 2;
+            _oldX = GraphicsDevice.Viewport.Width / 2;
+            _oldY = GraphicsDevice.Viewport.Height / 2;
         }
+
+        public static float Yaw { get; private set; }
+        public static float Pitch { get; private set; }
+
+        public static float MouseSensity { get; set; }
+        public static float Velocity { get; set; }
+
+        public static BoundingFrustum ViewFrustum { get; private set; }
+        public static Ray MouseRay { get; private set; }
 
         public static void Update()
         {
-            float dX = Mouse.GetState().X - oldX;
-            float dY = Mouse.GetState().Y - oldY;
+            float dX = Mouse.GetState().X - _oldX;
+            float dY = Mouse.GetState().Y - _oldY;
 
             Pitch += -MouseSensity * dY;
             Yaw += -MouseSensity * dX;
 
             Pitch = MathHelper.Clamp(Pitch, -1.5f, 1.5f);
 
-            calculateViewMatrix();
+            CalculateViewMatrix();
 
             try
             {
-                Mouse.SetPosition(Globals.GraphicsDevice.Viewport.Width / 2, Globals.GraphicsDevice.Viewport.Height / 2);
+                Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             }
-            catch { }
+            catch
+            {
+            }
 
             ViewFrustum = new BoundingFrustum(View * Projection);
 
             // RAY CALCULATION
-            Vector3 nearPlane = Globals.GraphicsDevice.Viewport.Unproject(new Vector3(Globals.GraphicsDevice.Viewport.Width / 2, Globals.GraphicsDevice.Viewport.Height / 2, 0), Projection, View, Matrix.Identity);
-            Vector3 farPlane = Globals.GraphicsDevice.Viewport.Unproject(new Vector3(Globals.GraphicsDevice.Viewport.Width / 2, Globals.GraphicsDevice.Viewport.Height / 2, 1), Projection, View, Matrix.Identity);
+            var nearPlane =
+                GraphicsDevice.Viewport.Unproject(
+                    new Vector3(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2, 0), Projection,
+                    View, Matrix.Identity);
+            var farPlane =
+                GraphicsDevice.Viewport.Unproject(
+                    new Vector3(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2, 1), Projection,
+                    View, Matrix.Identity);
 
-            Vector3 rayDirection = farPlane - nearPlane;
+            var rayDirection = farPlane - nearPlane;
             rayDirection /= rayDirection.Length();
 
             MouseRay = new Ray(nearPlane, rayDirection);
@@ -108,23 +113,24 @@ namespace ShootCube.Global
                 CameraOrientation = Orientation.Down;
             if (DirectionStationary.X == 0 && DirectionStationary.Y == 1 && DirectionStationary.Z == 0)
                 CameraOrientation = Orientation.Up;
-
         }
 
         public static void Move(Vector3 direction)
         {
-            Matrix rotation = Matrix.CreateRotationY(Yaw);
-            Vector3 transformed = Vector3.Transform(direction, rotation);
+            var rotation = Matrix.CreateRotationY(Yaw);
+            var transformed = Vector3.Transform(direction, rotation);
 
             transformed *= Velocity;
 
-            if (!IsColliding(new Vector3(CameraPosition.X + transformed.X + (transformed.X < 0 ? -.5f : .5f), CameraPosition.Y, CameraPosition.Z)))
+            if (!IsColliding(new Vector3(CameraPosition.X + transformed.X + (transformed.X < 0 ? -.5f : .5f),
+                CameraPosition.Y, CameraPosition.Z)))
                 CameraPosition.X += transformed.X;
-            if (!IsColliding(new Vector3(CameraPosition.X, CameraPosition.Y, CameraPosition.Z + transformed.Z + (transformed.Z < 0 ? -.5f : .5f))))
+            if (!IsColliding(new Vector3(CameraPosition.X, CameraPosition.Y,
+                CameraPosition.Z + transformed.Z + (transformed.Z < 0 ? -.5f : .5f))))
                 CameraPosition.Z += transformed.Z;
-            if (!IsColliding(new Vector3(CameraPosition.X, CameraPosition.Y + transformed.Y + (transformed.Y < 0 ? -.5f : .5f), CameraPosition.Z)))
+            if (!IsColliding(new Vector3(CameraPosition.X,
+                CameraPosition.Y + transformed.Y + (transformed.Y < 0 ? -.5f : .5f), CameraPosition.Z)))
                 CameraPosition.Y += transformed.Y;
-
         }
 
         public static bool IsColliding(Vector3 to)
@@ -133,28 +139,26 @@ namespace ShootCube.Global
             {
                 if (chunk == null)
                     continue;
-                for (int i = 0; i < chunk.BoundingBoxes.Count; i++)
-                {
+                for (var i = 0; i < chunk.BoundingBoxes.Count; i++)
                     if (chunk.BoundingBoxes[i].Contains(to) == ContainmentType.Contains)
                         return true;
-                }
             }
 
             return false;
         }
 
-        private static void calculateViewMatrix()
+        private static void CalculateViewMatrix()
         {
-            Matrix rotation = Matrix.CreateRotationX(Pitch) * Matrix.CreateRotationY(Yaw);
-            Vector3 transformed = Vector3.Transform(REFERENCEVECTOR, rotation);
+            var rotation = Matrix.CreateRotationX(Pitch) * Matrix.CreateRotationY(Yaw);
+            var transformed = Vector3.Transform(Referencevector, rotation);
 
             DirectionStationary = transformed;
-            DirectionStationary = new Vector3((float)Math.Round(DirectionStationary.X), (float)Math.Round(DirectionStationary.Y), (float)Math.Round(DirectionStationary.Z));
+            DirectionStationary = new Vector3((float) Math.Round(DirectionStationary.X),
+                (float) Math.Round(DirectionStationary.Y), (float) Math.Round(DirectionStationary.Z));
 
             Direction = CameraPosition + transformed;
 
             View = Matrix.CreateLookAt(CameraPosition, Direction, Vector3.Up);
-
         }
     }
 }

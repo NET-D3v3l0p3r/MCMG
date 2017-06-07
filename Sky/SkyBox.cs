@@ -1,12 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using ShootCube.Global;
-using System.Linq;
 using ShootCube.World.Chunk.Model;
-using System;
-using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace ShootCube.Sky
 {
@@ -14,15 +10,10 @@ namespace ShootCube.Sky
     {
         public VertexPosition[] Vertices = new VertexPosition[24]; // 4 each side * 6
 
-        public Effect Effect { get; private set; }
-        public VertexBuffer VertexBuffer { get; private set; }
-
-        public int Scale { get; private set; }
-
         public SkyBox(int scale)
         {
             Scale = scale;
-            int counterVertices = 0;
+            var counterVertices = 0;
             // Front
 
             Vertices[counterVertices++] = new VertexPosition(new Vector3(0, 0, 0) * scale);
@@ -64,18 +55,26 @@ namespace ShootCube.Sky
             Vertices[counterVertices++] = new VertexPosition(new Vector3(1, 1, 1) * scale);
             Vertices[counterVertices++] = new VertexPosition(new Vector3(1, 1, 0) * scale);
 
-            VertexBuffer = new VertexBuffer(Globals.GraphicsDevice, typeof(VertexPosition), Vertices.Length, BufferUsage.WriteOnly);
-            VertexBuffer.SetData<VertexPosition>(Vertices);
+            VertexBuffer = new VertexBuffer(Globals.GraphicsDevice, typeof(VertexPosition), Vertices.Length,
+                BufferUsage.WriteOnly);
+            VertexBuffer.SetData(Vertices);
 
             Effect = Globals.Content.Load<Effect>("shader");
-            
         }
+
+        public Effect Effect { get; }
+        public VertexBuffer VertexBuffer { get; }
+
+        public int Scale { get; }
+
         public void Draw()
-        {            
-            Effect.Parameters["Luminity"].SetValue((float)Math.Sin(Sky.Time));
-            Effect.Parameters["Projection"].SetValue( Camera.Projection);
+        {
+            Effect.Parameters["Luminity"].SetValue((float) Math.Sin(Sky.Time));
+            Effect.Parameters["Projection"].SetValue(Camera.Projection);
             Effect.Parameters["View"].SetValue(Camera.View);
-            Effect.Parameters["World"].SetValue( Matrix.CreateTranslation(new Vector3(-((Scale - ChunkManager.Width * Chunk.Width) / 2), -300, -((Scale - ChunkManager.Depth * Chunk.Depth) / 2))  ));
+            Effect.Parameters["World"]
+                .SetValue(Matrix.CreateTranslation(new Vector3(-((Scale - ChunkManager.Width * Chunk.Width) / 2), -300,
+                    -((Scale - ChunkManager.Depth * Chunk.Depth) / 2))));
             Effect.CurrentTechnique.Passes[0].Apply();
 
             Globals.GraphicsDevice.SetVertexBuffer(VertexBuffer);
