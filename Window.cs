@@ -56,7 +56,7 @@ namespace ShootCube
 
             IsFixedTimeStep = false;
  
-            //
+            
             base.Initialize();
         }
 
