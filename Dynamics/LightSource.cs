@@ -113,6 +113,9 @@ namespace ShootCube.Dynamics
         }
         private bool isObstacle(int x, int y, int z)
         {
+            if (x < 0 || x >= ChunkEditable.Width * ChunkManager.Width || z < 0 || z >= ChunkManager.Depth * ChunkEditable.Depth)
+                return true;
+
             return ChunkManager.Cubes[y, x, z] != 0;
         }
 

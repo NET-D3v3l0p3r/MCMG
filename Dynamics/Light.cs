@@ -57,41 +57,41 @@ namespace ShootCube.Dynamics
             if (leftValue != 0)
             {
                 BoundingBox left = new BoundingBox(new Vector3(X - 1, Y - 1, Z), new Vector3(X, Y, Z + 1));
-                Chunk c = ChunkManager.GetChunkForPosition(left.Min);
+                ChunkEditable c = ChunkManager.GetChunkForPosition(left.Min);
                 c.EditLight(c.CubeMap[left].Faces.ToList().Find(p => p != null && p.Side == Globals.Side.ZRight), 1.0f + value);
             }
 
             if (rightValue != 0)
             {
                 BoundingBox right = new BoundingBox(new Vector3(X + 1, Y - 1, Z), new Vector3(X + 2, Y, Z + 1));
-                Chunk c = ChunkManager.GetChunkForPosition(right.Min);
+                ChunkEditable c = ChunkManager.GetChunkForPosition(right.Min);
                 c.EditLight(c.CubeMap[right].Faces.ToList().Find(p => p != null && p.Side == Globals.Side.ZLeft), 1.0f + value);
             }
 
             if (frontValue != 0)
             {
                 BoundingBox front = new BoundingBox(new Vector3(X, Y - 1, Z + 1), new Vector3(X + 1, Y, Z + 2));
-                Chunk c = ChunkManager.GetChunkForPosition(front.Min);
+                ChunkEditable c = ChunkManager.GetChunkForPosition(front.Min);
                 c.EditLight(c.CubeMap[front].Faces.ToList().Find(p => p != null && p.Side == Globals.Side.XBackward), 1.0f + value);
             }
 
             if (backValue != 0)
             {
                 BoundingBox back = new BoundingBox(new Vector3(X, Y - 1, Z - 1), new Vector3(X + 1, Y, Z));
-                Chunk c = ChunkManager.GetChunkForPosition(back.Min);
+                ChunkEditable c = ChunkManager.GetChunkForPosition(back.Min);
                 c.EditLight(c.CubeMap[back].Faces.ToList().Find(p => p != null && p.Side == Globals.Side.XForward), 1.0f + value);
             }
 
             if (upValue != 0)
             {
                 BoundingBox top = new BoundingBox(new Vector3(X, Y, Z), new Vector3(X + 1, Y + 1, Z + 1));
-                Chunk c = ChunkManager.GetChunkForPosition(top.Min);
+                ChunkEditable c = ChunkManager.GetChunkForPosition(top.Min);
                 c.EditLight(c.CubeMap[top].Faces.ToList().Find(p => p != null && p.Side == Globals.Side.HorizontalDown), 1.0f + value);
             }
             if (downValue != 0)
             {
                 BoundingBox down = new BoundingBox(new Vector3(X, Y - 2, Z), new Vector3(X + 1, Y - 1, Z + 1));
-                Chunk c = ChunkManager.GetChunkForPosition(down.Min);
+                ChunkEditable c = ChunkManager.GetChunkForPosition(down.Min);
                 c.EditLight(c.CubeMap[down].Faces.ToList().Find(p => p != null && p.Side == Globals.Side.HorizontalUp), 1.0f + value);
 
             }

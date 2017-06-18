@@ -10,11 +10,12 @@ using Microsoft.Xna.Framework.Input;
 using ShootCube.Global;
 using ShootCube.Declaration;
 using System.Runtime.InteropServices;
+using ShootCube.World.Chunk.Model;
 
 namespace ShootCube.Dynamics
 {
     public class LightManager
     {
-        public List<LightSource> LightSources { get; set; }
+
     }
 }

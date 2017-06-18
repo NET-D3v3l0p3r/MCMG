@@ -33,7 +33,7 @@ namespace ShootCube.Sky
         {
             Divisor = divisor;
 
-            Sun = new Sun(new Vector3((ChunkManager.Width * Chunk.Width) / 2.0f, 0, 0));
+            Sun = new Sun(new Vector3((ChunkManager.Width * ChunkEditable.Width) / 2.0f, 0, 0));
             Sun.Radius = 500;
             //SkyBox = new SkyBox(2000);
             SunState = SunStateEnum.Sunset;

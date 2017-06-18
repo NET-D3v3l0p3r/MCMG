@@ -12,6 +12,8 @@ using ShootCube.Global.Input;
 using ShootCube.World.Chunk;
 using ShootCube.Global.Picking;
 using ShootCube.Dynamics;
+using ShootCube.Global.Utilities;
+using ShootCube.Dynamics.Ambient;
 
 namespace ShootCube
 {
@@ -26,7 +28,10 @@ namespace ShootCube
         FpsCounter fpsCounter = new FpsCounter();
         SpriteFont debugFont;
 
+        //WeatherManager weatherManager;
+
         public Sky.Sky SkyEnvironment;
+        public LightManager LightManager;
 
 
 
@@ -51,11 +56,11 @@ namespace ShootCube
 
             IsFixedTimeStep = false;
  
+            //
             base.Initialize();
         }
 
-
-        LightSource source;
+         
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -72,11 +77,15 @@ namespace ShootCube
 
             Globals.Initialize();
 
+            LightManager = new LightManager();
             new Camera(0.007f, .35f);
             new ChunkManager(15, 15);
             ChunkManager.Start();
 
+            //weatherManager = new WeatherManager();
+
             ChunkManager.Cubes[56, 32, 32] = 6;
+            ChunkManager.Cubes[57, 32, 32] = 6;
 
             ChunkManager.Run();
 
@@ -107,27 +116,51 @@ namespace ShootCube
 
             KeyboardControl.AddKey(new Key(Keys.Escape, new Action(() =>
             {
-                Exit();
+               Exit();
             }), true));
 
+            WeaponStatistics.Initialize();
 
             KeyboardControl.AddKey(new Key(Keys.X, new Action(() =>
             {
-
-                source = new LightSource(Camera.CameraPosition, 13);
+                LightSource source = new LightSource(Camera.CameraPosition, 13);
                 source.Emit();
-
-
             }), true));
+            KeyboardControl.AddKey(new Key(Keys.Y, new Action(() =>
+            {
+                
+            }), true));
+
 
             debugFont = Content.Load<SpriteFont>("debug");
 
             SkyEnvironment = new ShootCube.Sky.Sky(1);
 
 
+
+            MouseControl.AddLeftAction(new Action(() =>
+            {
+                var p = ChunkManager.Pick(5);
+                p?.Chunk.DestroyCube(p.Value, WeaponStatistics.Utilities.Pickaxe_diamond);
+            }), false, 55);
+
+
+            MouseControl.AddRightAction(new Action(() =>
+            {
+                var p = ChunkManager.Pick(5);
+                if (!p.HasValue)
+                    return;
+
+                var min = p.Value.BoundingBox.Min;
+                var pos = new Vector3(min.X, p.Value.BoundingBox.Max.Y + 1, min.Z);
+
+            }), false, 250);
+
+
+
             // TEST
 
-      
+
 
         }
 
@@ -140,8 +173,7 @@ namespace ShootCube
             // TODO: Unload any non ContentManager content here
         }
 
-
-        Profile? _new;
+        Profile? general;
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -152,21 +184,18 @@ namespace ShootCube
             if (!this.IsActive)
                 return;
 
+            MouseControl.Update(gameTime);
             KeyboardControl.Update();
             Camera.Update();
             ChunkManager.Update(gameTime);
-             
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-            {
 
-                _new = ChunkManager.Pick(5);
-                _new?.Chunk.RemoveCube(_new.Value.BoundingBox);
-            }
+            general = ChunkManager.Pick(5.0f);
 
 
-
-
+            //weatherManager.Update();
             SkyEnvironment.Update(gameTime);
+            
+
 
             base.Update(gameTime);
         }
@@ -178,7 +207,7 @@ namespace ShootCube
         protected override void Draw(GameTime gameTime)
         {
             fpsCounter.Start(gameTime);
-            GraphicsDevice.Clear(Color.CornflowerBlue );
+            GraphicsDevice.Clear(Color.Black );
 
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -199,7 +228,7 @@ namespace ShootCube
             Globals.Effect.Parameters["World"].SetValue(Matrix.Identity);
             Globals.Effect.Parameters["Projection"].SetValue(Camera.Projection);
             Globals.Effect.Parameters["TextureAtlas"].SetValue(ChunkManager.TextureAtlas);
-            Globals.Effect.Parameters["GlobalValue"].SetValue(MathHelper.Clamp((float)Math.Sin(Sky.Sky.Time), 1.0f, 2.0f));
+
 
             Globals.Effect.CurrentTechnique.Passes[0].Apply();
             ChunkManager.Render();
@@ -207,6 +236,7 @@ namespace ShootCube
 
             // TODO: Add your drawing code here
 
+            //weatherManager.Render();
             SkyEnvironment.Render();
             //source?.DebugDrawLight();
 
@@ -223,7 +253,10 @@ namespace ShootCube
             string debug =
                 @"FPS: " + fps + Environment.NewLine
                 + "Position: " + Camera.CameraPosition + Environment.NewLine
-                + "Look_at: " + Camera.CameraOrientation;
+                + "Chunk: " + ChunkManager.CurrentChunk.ChunkId + Environment.NewLine
+                + "Look_at: " + Camera.CameraOrientation + Environment.NewLine
+                + "Face_of_cube: " + (general.HasValue ? general.Value.Face.ToString() : "NULL") + Environment.NewLine
+                + "Allocated_bytes: " + ((GC.GetTotalMemory(false) / 1024f) / 1024f) + " MB!";
 
             spriteBatch.Begin();
             spriteBatch.DrawString(debugFont, debug, new Vector2(0, 0), Color.Yellow);

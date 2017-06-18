@@ -40,7 +40,7 @@ namespace ShootCube.Global
             MouseSensity = dpi;
             Velocity = velocity;
 
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, Globals.GraphicsDevice.Viewport.AspectRatio, 0.1f, 1024); ;
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, Globals.GraphicsDevice.Viewport.AspectRatio, 0.1f, 500); ;
 
             CameraPosition = new Vector3(16 * ChunkManager.Width / 2, 65, 16 * ChunkManager.Depth / 2);
 
@@ -135,6 +135,8 @@ namespace ShootCube.Global
                     continue;
                 for (int i = 0; i < chunk.BoundingBoxes.Count; i++)
                 {
+                    if (i > chunk.BoundingBoxes.Count)
+                        break;
                     if (chunk.BoundingBoxes[i].Contains(to) == ContainmentType.Contains)
                         return true;
                 }

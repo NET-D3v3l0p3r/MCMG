@@ -16,8 +16,8 @@ namespace ShootCube.World.Chunk
     public interface IFlat
     {
         VPTVDeclaration[] Vertices { get; set; }
-        Vector2 TextureAtlasCoordinates { get; set; }
         byte Id { get; set; }
+        byte Life { get; set; }
 
         Globals.Side Side { get; set; }
     }

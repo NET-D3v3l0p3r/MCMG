@@ -1,0 +1,121 @@
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\ShootCube.exe.config
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\ShootCube.exe
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\ShootCube.pdb
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\MonoGame.Framework.dll
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.MediaFoundation.dll
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.dll
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XAudio2.dll
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.DXGI.dll
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D11.dll
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct2D1.dll
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XInput.dll
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D9.dll
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\MonoGame.Framework.xml
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.MediaFoundation.xml
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.xml
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XAudio2.xml
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.DXGI.xml
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D11.xml
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct2D1.xml
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XInput.xml
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D9.xml
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\obj\x64\Debug\ShootCube.exe
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\obj\x64\Debug\ShootCube.pdb
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\Content\atlas.xnb
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\Content\debug.xnb
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\obj\x64\Debug\ShootCube.csprojResolveAssemblyReference.cache
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\Content\main.xnb
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.RawInput.dll
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\SharpDX.RawInput.xml
+C:\Users\3r0rXx\Documents\Visual Studio 2017\Projects\ShootCube\ShootCube\bin\x64\Debug\Content\light.xnb
+C:\Users\DEV\Desktop\ShootCube\ShootCube\obj\x64\Debug\ShootCube.csprojResolveAssemblyReference.cache
+C:\Users\DEV\Desktop\ShootCube\ShootCube\obj\x64\Debug\ShootCube.exe
+C:\Users\DEV\Desktop\ShootCube\ShootCube\obj\x64\Debug\ShootCube.pdb
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\Content\atlas.xnb
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\Content\debug.xnb
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\Content\light.xnb
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\Content\main.xnb
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\ShootCube.exe.config
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\ShootCube.exe
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\ShootCube.pdb
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\MonoGame.Framework.dll
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XAudio2.dll
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.dll
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.DXGI.dll
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D11.dll
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct2D1.dll
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XInput.dll
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.MediaFoundation.dll
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\MonoGame.Framework.xml
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XAudio2.xml
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.xml
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.DXGI.xml
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D11.xml
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct2D1.xml
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XInput.xml
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.MediaFoundation.xml
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D9.dll
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D9.xml
+C:\Users\DEV\Desktop\ShootCube\ShootCube\bin\x64\Debug\Content\animations.xnb
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\Content\atlas.xnb
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\Content\debug.xnb
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\Content\light.xnb
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\Content\main.xnb
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\ShootCube.exe.config
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\ShootCube.exe
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\ShootCube.pdb
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\MonoGame.Framework.dll
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.MediaFoundation.dll
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.dll
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XAudio2.dll
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.DXGI.dll
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D11.dll
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct2D1.dll
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XInput.dll
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.RawInput.dll
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D9.dll
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\MonoGame.Framework.xml
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.MediaFoundation.xml
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.xml
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XAudio2.xml
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.DXGI.xml
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D11.xml
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct2D1.xml
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.XInput.xml
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.RawInput.xml
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\SharpDX.Direct3D9.xml
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\obj\x64\Debug\ShootCube.csprojResolveAssemblyReference.cache
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\obj\x64\Debug\ShootCube.exe
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\obj\x64\Debug\ShootCube.pdb
+C:\Users\3r0rXx\Desktop\ShootCube\ShootCube\bin\x64\Debug\Content\animations.xnb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\ShootCube.exe.config
+C:\Users\3r0rXx\Documents\GitHub\MCMG\obj\x64\Debug\ShootCube.exe
+C:\Users\3r0rXx\Documents\GitHub\MCMG\obj\x64\Debug\ShootCube.pdb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\obj\x64\Debug\ShootCube.csprojResolveAssemblyReference.cache
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\Content\animations.xnb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\Content\atlas.xnb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\Content\debug.xnb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\Content\light.xnb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\Content\main.xnb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\ShootCube.exe
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\ShootCube.pdb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\MonoGame.Framework.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.MediaFoundation.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.XAudio2.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.DXGI.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.Direct3D11.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.Direct2D1.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.XInput.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.RawInput.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.Direct3D9.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\MonoGame.Framework.xml
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.MediaFoundation.xml
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.xml
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.XAudio2.xml
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.DXGI.xml
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.Direct3D11.xml
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.Direct2D1.xml
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.XInput.xml
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.RawInput.xml
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.Direct3D9.xml

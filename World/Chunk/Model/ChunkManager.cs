@@ -11,6 +11,7 @@ using ShootCube.MapGen;
 using ShootCube.Global;
 using static ShootCube.Global.Globals;
 using ShootCube.Global.Picking;
+using ShootCube.World.Structure.Cave;
 
 namespace ShootCube.World.Chunk.Model
 {
@@ -22,14 +23,14 @@ namespace ShootCube.World.Chunk.Model
         public static int Width { get; set; }
         public static int Depth { get; set; }
 
-        public static Chunk[] Chunks { get; set; }
+        public static ChunkEditable[] Chunks { get; set; }
         public static byte[,,] Cubes { get; set; }
  
 
 
         public static SimplexNoiseGenerator SimplexNoise { get; private set; }
 
-        public static Chunk CurrentChunk { get; private set; }
+        public static ChunkEditable CurrentChunk { get; private set; }
 
         #region "TextureAtlas"
 
@@ -50,13 +51,13 @@ namespace ShootCube.World.Chunk.Model
             Width = w;
             Depth = h;
 
-            Chunk.Width = 16;
-            Chunk.Depth = 16;
-            Chunk.Height = 55 + 55;
+            ChunkEditable.Width = 16;
+            ChunkEditable.Depth = 16;
+            ChunkEditable.Height = 256;
 
-            Chunks = new Chunk[Width * Depth];
+            Chunks = new ChunkEditable[Width * Depth];
 
-            Cubes = new byte[Chunk.Height, Width * Chunk.Width, Depth * Chunk.Depth];
+            Cubes = new byte[ChunkEditable.Height, Width * ChunkEditable.Width, Depth * ChunkEditable.Depth];
  
 
             TextureAtlas = Global.Globals.Content.Load<Texture2D>("atlas");
@@ -84,6 +85,7 @@ namespace ShootCube.World.Chunk.Model
             AddTexture(5, 5, 5, 5, 5, 5, 5);
             AddTexture(6, 6, 6, 6, 6, 6, 6);
             AddTexture(4, 4, 4, 4, 4, 4, 4);
+            AddTexture(8, 8, 8, 8, 8, 8, 8);
 
         }
 
@@ -104,7 +106,7 @@ namespace ShootCube.World.Chunk.Model
         {
             SimplexNoise = new SimplexNoiseGenerator(0, 1.0f / 512.0f, 1.0f / 512.0f, 1.0f / 512.0f, 1.0f / 512.0f)
             {
-                Factor = 55 - 55 ,
+                Factor = 130,
                 Sealevel = 55,
                 Octaves = 4
             };
@@ -113,7 +115,7 @@ namespace ShootCube.World.Chunk.Model
             {
                 for (int i = 0; i < Width; i++)
                 {
-                    Chunk chunk = new Chunk(new Vector3(i * 16, 0, j * 16));
+                    ChunkEditable chunk = new ChunkEditable(new Vector3(i * 16, 0, j * 16));
                     Chunks[i + j * Width] = chunk;
                 }
             }
@@ -121,28 +123,31 @@ namespace ShootCube.World.Chunk.Model
             {
                 int x = (int)Chunks[i].LocalPosition.X + (int)GLOBAL_TRANSLATION.X;
                 int z = (int)Chunks[i].LocalPosition.Z + (int)GLOBAL_TRANSLATION.Z;
-                for (int q = 0; q < Chunk.Width; q++)
+                for (int q = 0; q < ChunkEditable.Width; q++)
                 {
-                    for (int p = 0; p < Chunk.Depth; p++)
+                    for (int p = 0; p < ChunkEditable.Depth; p++)
                     {
                         int height = (int)SimplexNoise.GetNoise2D(x + q, z + p);
                         for (int y = 0; y <= height; y++)
                         {
-                            if (y == height)
+                            // TODO: ADD BIOMES!
+                            if(y >= 0 && y < 3)
+                                Cubes[y, x + q, z + p] = 8;
+                            else if (y == height)
                                 Cubes[y, x + q, z + p] = 1;
                             else if (y + 3 < height)
                                 Cubes[y, x + q, z + p] = Globals.Random.NextDouble() > 0.5 ? (byte)6 : Globals.Random.NextDouble() > 0.35 ? (byte)6 : (byte)5;
                             else
                                 Cubes[y, x + q, z + p] = 5;
 
-
+        
                         }
-
-       
                     }
                 }
 
             }
+
+            CaveGenerator.Generate();
         }
 
         public static void Run()
@@ -183,16 +188,23 @@ namespace ShootCube.World.Chunk.Model
                     continue;
                 for (int i = 0; i < chunk.BoundingBoxes.Count; i++)
                 {
+                    if (i > chunk.BoundingBoxes.Count)
+                        break;
                     var bb = chunk.BoundingBoxes[i];
-                    var result = Camera.MouseRay.Intersects(bb);
-                    if (result.HasValue)
+
+                    float distance = .0f;
+                    Face face = Face.NULL;
+
+                    var result = Globals.IntersectRayVsBox(bb, Camera.MouseRay, out distance, out face);
+
+                    if (result)
                     {
-                        float distance = result.Value;
                         if (distance < maxLength)
                         {
                             Profile p = new Profile()
                             {
                                 Chunk = chunk,
+                                Face = face,
                                 BoundingBox = bb,
                                 Cube = Cube.LoadFromBoundingBox(bb),
                                 Distance = distance
@@ -206,11 +218,11 @@ namespace ShootCube.World.Chunk.Model
         }
         public static List<IFlat> ExtractFlat(Vector3 position)
         {
-            Chunk chunk = GetChunkForPosition(position);
+            ChunkEditable chunk = GetChunkForPosition(position);
             if (chunk == null)
                 return null;
 
-            return chunk.Tiles.FindAll(p => p.Vertices[0].Position == position);
+            return chunk.Tiles.FindAll(p => p != null && p.Vertices[0].Position == position);
         }
 
         public static IEnumerable<Cube> GetCubeByHit(BoundingBox hit)
@@ -228,7 +240,7 @@ namespace ShootCube.World.Chunk.Model
             }
         }
 
-        public static Chunk GetChunkForPosition(Vector3 position)
+        public static ChunkEditable GetChunkForPosition(Vector3 position)
         {
             foreach (var chunk in CurrentChunk.Neighbours)
             {

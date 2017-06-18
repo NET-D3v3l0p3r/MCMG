@@ -19,7 +19,8 @@ namespace ShootCube.Declaration
         (
             new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
             new VertexElement(12, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
-            new VertexElement(20, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 1)
+            new VertexElement(20, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 1),
+            new VertexElement(28, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 2)
         );
 
         public VertexDeclaration VertexDeclaration
@@ -29,15 +30,17 @@ namespace ShootCube.Declaration
 
         public Vector3 Position { get; set; }
         public Vector2 TextureCoordinate { get; set; }
+        public Vector2 AnimationCoordinate { get; set; }
         public Vector2 Value { get; set; }
 
-        public VPTVDeclaration(Vector3 pos, Vector2 tex, float v)
+        public VPTVDeclaration(Vector3 pos, Vector2 tex, Vector2 anim, float v)
             :this()
         {
 
             Position = pos;
             TextureCoordinate = tex;
-            Value = new Vector2(v);  
+            AnimationCoordinate = anim;
+            Value = new Vector2(v);
         }
 
     }

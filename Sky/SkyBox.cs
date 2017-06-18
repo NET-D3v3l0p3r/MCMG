@@ -75,7 +75,7 @@ namespace ShootCube.Sky
             Effect.Parameters["Luminity"].SetValue((float)Math.Sin(Sky.Time));
             Effect.Parameters["Projection"].SetValue( Camera.Projection);
             Effect.Parameters["View"].SetValue(Camera.View);
-            Effect.Parameters["World"].SetValue( Matrix.CreateTranslation(new Vector3(-((Scale - ChunkManager.Width * Chunk.Width) / 2), -300, -((Scale - ChunkManager.Depth * Chunk.Depth) / 2))  ));
+            Effect.Parameters["World"].SetValue( Matrix.CreateTranslation(new Vector3(-((Scale - ChunkManager.Width * ChunkEditable.Width) / 2), -300, -((Scale - ChunkManager.Depth * ChunkEditable.Depth) / 2))  ));
             Effect.CurrentTechnique.Passes[0].Apply();
 
             Globals.GraphicsDevice.SetVertexBuffer(VertexBuffer);
