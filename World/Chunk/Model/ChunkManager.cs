@@ -31,6 +31,7 @@ namespace ShootCube.World.Chunk.Model
         public static SimplexNoiseGenerator SimplexNoise { get; private set; }
 
         public static ChunkEditable CurrentChunk { get; private set; }
+        public static int AmountRenderingChunk { get; set; }
 
         #region "TextureAtlas"
 
@@ -83,9 +84,12 @@ namespace ShootCube.World.Chunk.Model
 
             AddTexture(1, 1, 5, 2, 2, 2, 2);
             AddTexture(5, 5, 5, 5, 5, 5, 5);
+            AddTexture(3, 3, 3, 3, 3, 3, 3);
             AddTexture(6, 6, 6, 6, 6, 6, 6);
             AddTexture(4, 4, 4, 4, 4, 4, 4);
             AddTexture(8, 8, 8, 8, 8, 8, 8);
+
+            
 
         }
 
@@ -104,10 +108,11 @@ namespace ShootCube.World.Chunk.Model
 
         public static void Start()
         {
+
             SimplexNoise = new SimplexNoiseGenerator(0, 1.0f / 512.0f, 1.0f / 512.0f, 1.0f / 512.0f, 1.0f / 512.0f)
             {
                 Factor = 130,
-                Sealevel = 55,
+                Sealevel = 90,
                 Octaves = 4
             };
 
@@ -119,6 +124,7 @@ namespace ShootCube.World.Chunk.Model
                     Chunks[i + j * Width] = chunk;
                 }
             }
+
             for (int i = 0; i < Chunks.Length; i++)
             {
                 int x = (int)Chunks[i].LocalPosition.X + (int)GLOBAL_TRANSLATION.X;
@@ -128,19 +134,29 @@ namespace ShootCube.World.Chunk.Model
                     for (int p = 0; p < ChunkEditable.Depth; p++)
                     {
                         int height = (int)SimplexNoise.GetNoise2D(x + q, z + p);
+
                         for (int y = 0; y <= height; y++)
                         {
+
                             // TODO: ADD BIOMES!
-                            if(y >= 0 && y < 3)
+                            if (y >= 0 && y < 3)
                                 Cubes[y, x + q, z + p] = 8;
                             else if (y == height)
-                                Cubes[y, x + q, z + p] = 1;
+                            {
+                                int oldHeight = height - 35;
+
+                                if (oldHeight >= int.MinValue && oldHeight < 35)
+                                    Cubes[y, x + q, z + p] = 4;
+                                else if (oldHeight >= 35 && oldHeight < 80)
+                                    Cubes[y, x + q, z + p] = Globals.Random.NextDouble() > 0.5 ? (byte)6 : Globals.Random.NextDouble() > 0.35 ? (byte)6 : (byte)5;
+                                else Cubes[y, x + q, z + p] = 1;
+                            }
                             else if (y + 3 < height)
                                 Cubes[y, x + q, z + p] = Globals.Random.NextDouble() > 0.5 ? (byte)6 : Globals.Random.NextDouble() > 0.35 ? (byte)6 : (byte)5;
                             else
                                 Cubes[y, x + q, z + p] = 5;
 
-        
+
                         }
                     }
                 }
@@ -148,6 +164,7 @@ namespace ShootCube.World.Chunk.Model
             }
 
             CaveGenerator.Generate();
+
         }
 
         public static void Run()

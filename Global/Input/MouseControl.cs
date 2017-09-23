@@ -12,7 +12,7 @@ namespace ShootCube.Global.Input
     public static class MouseControl
     {
 
-        private static Action leftAct, rigthAct;
+        private static Action leftAct, rigthAct, releaseRightAct, releaseLeftAct;
         private static bool leftReq, rightReq;
 
         private static bool leftPressed, rightPressed;
@@ -21,16 +21,20 @@ namespace ShootCube.Global.Input
         private static long a = 0;
         private static long b = 0;
 
-        public static void AddLeftAction(Action action, bool reqRelease, int ms = 1)
+        public static void AddLeftAction(Action action, Action release, bool reqRelease, int ms = 1)
         {
             leftAct = action;
+            releaseLeftAct = release;
+
             leftReq = reqRelease;
             leftLenght = ms;
         }
 
-        public static void AddRightAction(Action action, bool reqRelease, int ms = 1)
+        public static void AddRightAction(Action action, Action release, bool reqRelease, int ms = 1)
         {
             rigthAct = action;
+            releaseRightAct = release;
+
             rightReq = reqRelease;
             rightLength = ms;
         }
@@ -48,7 +52,10 @@ namespace ShootCube.Global.Input
                         leftAct?.Invoke();
                     }
                     if (Mouse.GetState().LeftButton == ButtonState.Released)
+                    {
                         leftPressed = false;
+                        releaseLeftAct?.Invoke();
+                    }
                     break;
 
                 case false:
@@ -60,6 +67,10 @@ namespace ShootCube.Global.Input
                             a = (long)gTime.TotalGameTime.TotalMilliseconds + leftLenght;
                         }
                     }
+
+
+                    if (Mouse.GetState().LeftButton == ButtonState.Released)
+                        releaseLeftAct?.Invoke();
                     break;
             }
 
@@ -72,7 +83,10 @@ namespace ShootCube.Global.Input
                         rigthAct?.Invoke();
                     }
                     if (Mouse.GetState().RightButton == ButtonState.Released)
+                    {
                         rightPressed = false;
+                        releaseRightAct?.Invoke();
+                    }
                     break;
 
                 case false:
@@ -84,6 +98,9 @@ namespace ShootCube.Global.Input
                             b = (long)gTime.TotalGameTime.TotalMilliseconds + rightLength;
                         }
                     }
+
+                    if (Mouse.GetState().RightButton == ButtonState.Released)
+                        releaseRightAct?.Invoke();
                     break;
             }
 

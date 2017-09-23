@@ -236,6 +236,9 @@ namespace ShootCube.World.Chunk.Model
                 offSet += 4;
             }
 
+            if (Vertices.Length == 0)
+                return;
+
             VertexBuffer = new VertexBuffer(Globals.GraphicsDevice, typeof(VPTVDeclaration), Vertices.Length, BufferUsage.WriteOnly);
             VertexBuffer.SetData<VPTVDeclaration>(Vertices);
 
@@ -308,6 +311,9 @@ namespace ShootCube.World.Chunk.Model
             byte damage = WeaponStatistics.UtilityDamageRelation[utility];
 
             Cube cube = profile.Cube;
+
+          
+            Informations.CorrespondingAudios[cube.Faces.ToList().Find(p => p != null).Id].Play();
 
             int x = (int)profile.BoundingBox.Min.X;
             int z1 = (int)profile.BoundingBox.Min.Z;
@@ -612,6 +618,8 @@ namespace ShootCube.World.Chunk.Model
 
             Globals.GraphicsDevice.SetVertexBuffer(VertexBuffer);
             Globals.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, VerticesCount * 2);
+
+            ChunkManager.AmountRenderingChunk++;
         }
         #endregion
         #region "OVERRIDES"

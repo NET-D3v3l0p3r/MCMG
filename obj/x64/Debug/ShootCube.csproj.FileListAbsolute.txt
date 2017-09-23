@@ -119,3 +119,9 @@ C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.Direct2D1.xml
 C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.XInput.xml
 C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.RawInput.xml
 C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\SharpDX.Direct3D9.xml
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\DotNETWork.dll
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\DotNETWork.pdb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\Content\jetpack.xnb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\Content\Cube Axe.xnb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\Content\sounds\cubes\dirt.xnb
+C:\Users\3r0rXx\Documents\GitHub\MCMG\bin\x64\Debug\Content\sounds\cubes\stone.xnb

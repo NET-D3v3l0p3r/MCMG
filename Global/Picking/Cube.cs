@@ -22,7 +22,10 @@ namespace ShootCube.Global.Picking
             Vector3 max = bb.Max;
             Vector3 initial = new Vector3(min.X, max.Y, min.Z);
             cube.Chunk = ChunkManager.GetChunkForPosition(initial);
-            if (cube.Chunk.CubeMap.Keys.ToList().Exists(p => p.Min == min))
+            if (cube.Chunk == null)
+                return null;
+
+            if (cube.Chunk.CubeMap.Keys.ToList().Exists(p => p!= null && p.Min == min))
                 return cube.Chunk.CubeMap[bb];
             else return null;
 

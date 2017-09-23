@@ -14,6 +14,9 @@ using ShootCube.Global.Picking;
 using ShootCube.Dynamics;
 using ShootCube.Global.Utilities;
 using ShootCube.Dynamics.Ambient;
+using ShootCube.Dynamics.Player;
+using ShootCube.Dynamics.Ambient.Gravitation;
+using ShootCube.Items.Mountable.Weapons;
 
 namespace ShootCube
 {
@@ -31,9 +34,13 @@ namespace ShootCube
         //WeatherManager weatherManager;
 
         public Sky.Sky SkyEnvironment;
+
         public LightManager LightManager;
+        public GravitationManager GravitationManager;
 
+        // DEBUG
 
+        DebugAxe _debugAxe;
 
         public Window()
         {
@@ -60,7 +67,7 @@ namespace ShootCube
             base.Initialize();
         }
 
-         
+
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -78,8 +85,8 @@ namespace ShootCube
             Globals.Initialize();
 
             LightManager = new LightManager();
-            new Camera(0.007f, .35f);
-            new ChunkManager(15, 15);
+            new Camera(0.007f, .15f);
+            new ChunkManager(5, 5);
             ChunkManager.Start();
 
             //weatherManager = new WeatherManager();
@@ -89,34 +96,12 @@ namespace ShootCube
 
             ChunkManager.Run();
 
-            KeyboardControl.AddKey(new Key(Keys.W, new Action(() =>
-            {
-                Camera.Move(new Vector3(0, 0, -1));
-            }), false));
-            KeyboardControl.AddKey(new Key(Keys.A, new Action(() =>
-            {
-                Camera.Move(new Vector3(-1, 0, 0));
-            }), false));
-            KeyboardControl.AddKey(new Key(Keys.S, new Action(() =>
-            {
-                Camera.Move(new Vector3(0, 0, 1));
-            }), false));
-            KeyboardControl.AddKey(new Key(Keys.D, new Action(() =>
-            {
-                Camera.Move(new Vector3(1, 0, 0));
-            }), false));
-            KeyboardControl.AddKey(new Key(Keys.Space, new Action(() =>
-            {
-                Camera.Move(new Vector3(0, 1, 0));
-            }), false));
-            KeyboardControl.AddKey(new Key(Keys.LeftShift, new Action(() =>
-            {
-                Camera.Move(new Vector3(0, -1, 0));
-            }), false));
+            Globals.MainPlayer = new MainPlayer("");
+            GravitationManager = new GravitationManager(Globals.MainPlayer, 0.25f, 0.055f);
 
             KeyboardControl.AddKey(new Key(Keys.Escape, new Action(() =>
             {
-               Exit();
+                Exit();
             }), true));
 
             WeaponStatistics.Initialize();
@@ -125,10 +110,6 @@ namespace ShootCube
             {
                 LightSource source = new LightSource(Camera.CameraPosition, 13);
                 source.Emit();
-            }), true));
-            KeyboardControl.AddKey(new Key(Keys.Y, new Action(() =>
-            {
-                
             }), true));
 
 
@@ -142,25 +123,18 @@ namespace ShootCube
             {
                 var p = ChunkManager.Pick(5);
                 p?.Chunk.DestroyCube(p.Value, WeaponStatistics.Utilities.Pickaxe_diamond);
-            }), false, 55);
-
-
-            MouseControl.AddRightAction(new Action(() =>
+                _debugAxe.Activation = 20;
+            }), new Action(() =>
             {
-                var p = ChunkManager.Pick(5);
-                if (!p.HasValue)
-                    return;
-
-                var min = p.Value.BoundingBox.Min;
-                var pos = new Vector3(min.X, p.Value.BoundingBox.Max.Y + 1, min.Z);
-
-            }), false, 250);
-
+                _debugAxe.Activation = 0;
+                foreach (var item in Informations.CorrespondingAudios)
+                    item.Value.Stop();
+            }), false, 55);
 
 
             // TEST
 
-
+            _debugAxe = new DebugAxe();
 
         }
 
@@ -174,6 +148,7 @@ namespace ShootCube
         }
 
         Profile? general;
+ 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -194,9 +169,8 @@ namespace ShootCube
 
             //weatherManager.Update();
             SkyEnvironment.Update(gameTime);
-            
-
-
+            GravitationManager.Update(gameTime);
+   
             base.Update(gameTime);
         }
 
@@ -207,8 +181,10 @@ namespace ShootCube
         protected override void Draw(GameTime gameTime)
         {
             fpsCounter.Start(gameTime);
-            GraphicsDevice.Clear(Color.Black );
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            
+ 
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.RasterizerState = RasterizerState.CullNone;
@@ -239,6 +215,8 @@ namespace ShootCube
             //weatherManager.Render();
             SkyEnvironment.Render();
             //source?.DebugDrawLight();
+            _debugAxe.Render(gameTime);
+
 
             printDebug();
 
@@ -256,11 +234,14 @@ namespace ShootCube
                 + "Chunk: " + ChunkManager.CurrentChunk.ChunkId + Environment.NewLine
                 + "Look_at: " + Camera.CameraOrientation + Environment.NewLine
                 + "Face_of_cube: " + (general.HasValue ? general.Value.Face.ToString() : "NULL") + Environment.NewLine
+                + "Rendering_Chunks: " + ChunkManager.AmountRenderingChunk + Environment.NewLine 
                 + "Allocated_bytes: " + ((GC.GetTotalMemory(false) / 1024f) / 1024f) + " MB!";
 
             spriteBatch.Begin();
             spriteBatch.DrawString(debugFont, debug, new Vector2(0, 0), Color.Yellow);
             spriteBatch.End();
+
+            ChunkManager.AmountRenderingChunk = 0;
         }
     }
 }

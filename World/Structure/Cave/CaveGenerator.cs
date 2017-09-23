@@ -10,22 +10,25 @@ namespace ShootCube.World.Structure.Cave
     {
         public static List<Node> Nodes = new List<Node>();
 
-        
+
         public static void Generate()
         {
 
-         
+            for (int i = 0; i < Nodes.Count; i++)
+                Nodes[i].ConnectedTo = Nodes[GetRandomExDefined(i, Nodes.Count)];
 
-            for (int i = 0; i < Nodes.Count - 1; i++)
-            {
-                Nodes[i].ConnectedTo = Nodes[i + 1];
-            }
             foreach (var node in Nodes)
-            {
                 node.RunOperation();
-            }
 
             Nodes.Clear();
+        }
+
+        private static int GetRandomExDefined(int i, int max)
+        {
+            int random = Global.Globals.Random.Next(0, max);
+            if (random == i)
+                return GetRandomExDefined(i, max);
+            else return random;
         }
 
     }

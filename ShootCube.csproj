@@ -60,7 +60,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="BoundingBoxRenderer.cs" />
     <Compile Include="Declaration\VPTVDeclaration.cs" />
+    <Compile Include="Dynamics\Ambient\Gravitation\GravitationManager.cs" />
     <Compile Include="Dynamics\Ambient\Particle\IParticle.cs" />
     <Compile Include="Dynamics\Ambient\Particle\Rain.cs" />
     <Compile Include="Dynamics\Ambient\WeatherManager.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Global\Extension.cs" />
     <Compile Include="Global\FpsCounter.cs" />
     <Compile Include="Global\Globals.cs" />
+    <Compile Include="Global\Informations.cs" />
     <Compile Include="Global\Input\Key.cs" />
     <Compile Include="Global\Input\KeyboardControl.cs" />
     <Compile Include="Global\Input\MouseControl.cs" />
@@ -88,11 +90,16 @@
     <Compile Include="Global\Utilities\WeaponStatistics.cs" />
     <Compile Include="Heightmap\INoise.cs" />
     <Compile Include="Heightmap\SimplexNoiseGenerator.cs" />
+    <Compile Include="Items\Mountable\Weapons\DebugAxe.cs" />
+    <Compile Include="Items\Mountable\Weapons\IWeapon.cs" />
     <Compile Include="Maths\AdvancedRay.cs" />
     <Compile Include="Maths\Int32_3D.cs" />
     <Compile Include="Maths\Int16_3D.cs" />
+    <Compile Include="Network\Connector.cs" />
+    <Compile Include="Network\NetworkManager.cs" />
     <Compile Include="Particles\IParticle.cs" />
     <Compile Include="Particles\ParticleManager.cs" />
+    <Compile Include="Player\Player.cs" />
     <Compile Include="Sky\Sky.cs" />
     <Compile Include="Sky\SkyBox.cs" />
     <Compile Include="Sky\Sun.cs" />
@@ -111,6 +118,10 @@
     <Compile Include="World\Structure\Cave\Value.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="DotNETWork">
+      <HintPath>..\..\..\Desktop\DotNETwork\bin\Debug\DotNETWork.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
@@ -141,7 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GUI\" />
-    <Folder Include="Network\" />
     <Folder Include="ParticleSystem\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

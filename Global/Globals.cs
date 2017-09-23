@@ -11,11 +11,15 @@ using System.IO;
 using Microsoft.Xna.Framework.Content;
 using ShootCube.Maths;
 using ShootCube.World.Chunk.Model;
+using ShootCube.Dynamics.Player;
 
 namespace ShootCube.Global
 {
     public static class Globals
     {
+
+        public static MainPlayer MainPlayer { get; set; }
+
 
         public static GraphicsDevice GraphicsDevice { get; set; }
         public static GraphicsDeviceManager GraphicsDeviceManager { get; set; }
@@ -186,6 +190,7 @@ namespace ShootCube.Global
             Console.WriteLine("DONE LOADING EFFECT!");
 
             Random = new Random();
+            Informations.Initialize();
         }
 
         public static Vector2[] GetTextureCoordinate(byte id)

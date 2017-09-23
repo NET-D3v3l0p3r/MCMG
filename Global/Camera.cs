@@ -40,9 +40,9 @@ namespace ShootCube.Global
             MouseSensity = dpi;
             Velocity = velocity;
 
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, Globals.GraphicsDevice.Viewport.AspectRatio, 0.1f, 500); ;
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, Globals.GraphicsDevice.Viewport.AspectRatio, 0.001f, 3000); ;
 
-            CameraPosition = new Vector3(16 * ChunkManager.Width / 2, 65, 16 * ChunkManager.Depth / 2);
+            CameraPosition = new Vector3(16 * ChunkManager.Width / 2, 200, 16 * ChunkManager.Depth / 2);
 
             oldX = Globals.GraphicsDevice.Viewport.Width / 2;
             oldY = Globals.GraphicsDevice.Viewport.Height / 2;
@@ -122,9 +122,17 @@ namespace ShootCube.Global
                 CameraPosition.X += transformed.X;
             if (!IsColliding(new Vector3(CameraPosition.X, CameraPosition.Y, CameraPosition.Z + transformed.Z + (transformed.Z < 0 ? -.5f : .5f))))
                 CameraPosition.Z += transformed.Z;
-            if (!IsColliding(new Vector3(CameraPosition.X, CameraPosition.Y + transformed.Y + (transformed.Y < 0 ? -.5f : .5f), CameraPosition.Z)))
+            if (!IsColliding(new Vector3(CameraPosition.X, CameraPosition.Y + transformed.Y + (transformed.Y < 0 ? -.75f : .75f), CameraPosition.Z)))
                 CameraPosition.Y += transformed.Y;
+            else
+            {
+                Globals.MainPlayer.Fuel = 200;
+                Globals.MainPlayer.SoundEffectInstance.Stop();
+                Globals.MainPlayer.isPlaying = false;
 
+                Globals.MainPlayer.GravitationManager.Reset();
+
+            }
         }
 
         public static bool IsColliding(Vector3 to)
